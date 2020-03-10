@@ -20,7 +20,11 @@ module.exports = {
         })
     },
  
-    createEvent: (args) => {
+    createEvent: (args,req) => {
+        if (!req.isAuth){
+            console.log(req.isAuth)
+            throw new Error('Unauthenticated user!')
+        }
        //console.log(args)
         // const event={
         //     _id: Math.random().toString(),
@@ -34,7 +38,7 @@ module.exports = {
             description:args.eventInput.description,
             price: +args.eventInput.price,
             date: new Date(args.eventInput.date ),
-            creator: '5e5f8e79170bc92780756e95'
+            creator: req.userId
         });
         let createdEvent;
         return event.save().then(result => {
